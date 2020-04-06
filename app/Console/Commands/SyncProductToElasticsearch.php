@@ -25,7 +25,7 @@ class SyncProductToElasticsearch extends BaseCommand
      *
      * @var string
      */
-    protected $description = '同步product到elasticsearch';
+    protected $description = '同步product到elasticsearch ';
 
     /**
      * Create a new command instance.
