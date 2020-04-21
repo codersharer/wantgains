@@ -157,8 +157,8 @@ abstract class AbstractPrograms
                 $merchant = MerchantRepository::getInfoByField('domain', $product['domain']);
                 $product['updated_at'] = date('Y-m-d H:i:s');
                 $product['merchant_id'] = $merchant['id'];
-                $product['status'] = Product::STATUS_ACTIVE;
                 $product['name'] = html_entity_decode(stripslashes(trim($product['name'])));
+                $product['source'] = 'affiliate';
                 ProductRepository::saveBySync($product);
             });
             $this->climate->green("{$product['name']} finish" . PHP_EOL);

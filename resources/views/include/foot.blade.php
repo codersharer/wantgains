@@ -86,10 +86,10 @@
             });
         });
         $('.product-out').on('click', function () {
-            window.open($(this).attr('data-out'))
+            // window.open($(this).attr('data-out'))
         });
         $('.out').on('click', function () {
-            window.open(window.location.href)
+            // window.open(window.location.href)
         });
         $('.product-promotion-modal').on('click', function () {
             var productId = $(this).attr('data-product-id');
@@ -99,7 +99,7 @@
                 url: '{{ route('api.product-detail') }}',
                 data: {"_token": "{{ csrf_token() }}", "product_id": productId},
                 success: function (data) {
-                    window.open(data.out);
+                    // window.open(data.out);
                     $('#product-promotion-modal').html(data.html);
                     $('#product-promotion-modal').modal('show')
                 }

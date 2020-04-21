@@ -13,9 +13,13 @@
         "elasticsearch/elasticsearch": "7.0.0",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
+        "jaeger/querylist": "^4.2",
+        "jaeger/querylist-curl-multi": "^4.0",
+        "jeremykendall/php-domain-parser": "^5.6",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "league/climate": "^3.5",
+        "php-imap/php-imap": "^3.0",
         "predis/predis": "^1.1",
         "studio/laravel-totem": "v5.3.1"
     },

@@ -19,6 +19,8 @@ class Promotion extends Model
     CONST SCENES_FIRST_ORDER = 2;
     //特定商品优惠
     CONST SCENES_SPECIAL_PRODUCT = 3;
+    //固定价格
+    CONST FIXED_PRICE = 4;
 
     CONST REDIS_KEY = ':PROMOTION:';
 
@@ -30,6 +32,7 @@ class Promotion extends Model
         self::SCENES_ALL_SITE        => 'all_site',
         self::SCENES_FIRST_ORDER     => 'first_order',
         self::SCENES_SPECIAL_PRODUCT => 'special_product',
+        self::FIXED_PRICE            => 'fixed_price',
     ];
 
 
@@ -41,9 +44,12 @@ class Promotion extends Model
         'type',
         'coupon_code',
         'url',
-        'scenes' . 'promotion_start_at',
+        'scenes',
+        'promotion_start_at',
         'promotion_end_at',
         'status',
         'description',
+        'currency',
+
     ];
 }

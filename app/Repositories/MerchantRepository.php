@@ -72,9 +72,12 @@ class MerchantRepository
 
     public static function getInfoByField($field, $value)
     {
-        $info = Merchant::where($field, $value)->first()->toArray();
+        $info = Merchant::where($field, $value)->first();
+        if ($info) {
+            return $info->toArray();
+        }
 
-        return $info;
+        return [];
     }
 
     public static function getTopCategories($take = 10)

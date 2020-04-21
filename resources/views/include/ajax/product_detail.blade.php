@@ -13,6 +13,7 @@
                                 <p>
                                     <a href="{{ route('merchant.detail', ['slug' => $product['merchant_slug'],'merchant_id' => $product['merchant_id']]) }}">{{ $product['merchant_name'] }}</a>
                                 </p>
+                                <p>{{ $product['description'] }}</p>
                                 <div class="footer">
 
                                     @if ($product['promotions'])
@@ -29,15 +30,8 @@
                                     @endif
 
 
+
                                     <div class="float-right">
-                                        {{--<a href="{{ route('product.out', ['productId' => $product['id']]) }}"--}}
-                                        {{--class="btn btn-primary product-out"><i--}}
-                                        {{--class="iconfont icon-open mr-1"></i>Coupon--}}
-                                        {{--code</a>--}}
-                                        {{--<a href="{{ route('product.out', ['productId' => $product['id']]) }}"--}}
-                                        {{--class="btn btn-primary product-out"><i--}}
-                                        {{--class="iconfont icon-open mr-1"></i>Get--}}
-                                        {{--deal</a>--}}
                                         <a href="#product-promotion-modal" class="btn btn-primary"
                                            data-toggle="modal" data-product="{{ $product['promotions_json']}}"><i
                                                     class="iconfont

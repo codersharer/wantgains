@@ -6,11 +6,10 @@ namespace App\Services\Sync\Programs;
 
 use App\Common\Func;
 use App\Common\Http;
+use App\Models\Product;
 use App\Models\Program;
-use App\Models\Promotion;
 use App\Repositories\ProgramRepository;
 use function addslashes;
-use function array_slice;
 use function ceil;
 use function count;
 use function dd;
@@ -19,8 +18,8 @@ use function html_entity_decode;
 use function implode;
 use function is_array;
 use function md5;
-use const PHP_EOL;
 use function str_replace;
+use const PHP_EOL;
 
 class Cj extends AbstractPrograms
 {
@@ -49,7 +48,7 @@ class Cj extends AbstractPrograms
         $response = Func::xmlToJson($response['content']);
         $this->totalPages = ceil($response['advertisers']['@attributes']['total-matched'] / $perPage);
         for ($i = $this->startPage; $i <= $this->totalPages; $i++) {
-//            $this->climate->yellow("page : {$i} start");
+            //            $this->climate->yellow("page : {$i} start");
             echo "page {$i} start" . PHP_EOL;
             $this->currentPage = $i;
             $response = Http::get($this->advertiserUrl . "&page-number={$i}",
@@ -137,13 +136,13 @@ class Cj extends AbstractPrograms
         $where = [
             'affiliate_id'        => $this->affInfo['id'],
             'status_in_aff'       => Program::STATUS_ACTIVE_IN_AFF,
-            'status_in_dashboard' => Program::STATUS_ACTIVE_DASHBOARD
+            'status_in_dashboard' => Program::STATUS_ACTIVE_DASHBOARD,
         ];
         if ($this->currentProgramId) {
             $where[] = ['id', '>=', $this->currentProgramId];
         }
         $programs = ProgramRepository::getList($where, ['field' => 'id', 'sort_flag' => 'asc']);
-        //        dd($this->currentPage, $this->startPage, $this->currentProgramId,$this->logId);
+
         if ($programs) {
             foreach ($programs as $program) {
                 $this->currentProgramId = $program['id'];
@@ -168,7 +167,7 @@ class Cj extends AbstractPrograms
                     $response = Func::xmlToJson($response['content'], true);
                     $products = $response['products']['product'];
                     if (empty($products)) {
-                        $this->climate->red("program:{$program['id_in_aff']} page : {$i} products parse error maybe");
+                        $this->climate->red("program:{$this->currentProgramId} page : {$i} products parse error maybe");
                         break;
                     }
                     if (!is_array($products[0]) && $products) {
@@ -193,6 +192,9 @@ class Cj extends AbstractPrograms
                         if ($product['manufacturer-sku']) {
                             $sku = $product['manufacturer-sku'];
                         }
+
+                        $status = $product['in-stock'] == "true" ? Product::STATUS_ACTIVE : Product::STATUS_INACTIVE;
+
                         $this->products[] = [
                             'product_id_in_aff' => md5($product['name']),
                             'affiliate_id'      => $this->affInfo['id'],
@@ -203,10 +205,11 @@ class Cj extends AbstractPrograms
                             'category'          => $categories,
                             'description'       => $product['description'] ? addslashes($product['description']) : '',
                             'track_link'        => html_entity_decode($product['buy-url']) . '&sid=[SUBTRACKING]',
-                            'image_url'         => $product['image-url'] ?? '',
+                            'image_url'         => $product['image-url'] ? $product['image-url'] : '',
                             'price'             => $product['price'],
+                            'currency'          => $product['currency'] ? $product['currency'] : '',
                             'real_price'        => $realPrice,
-                            'status'            => Promotion::ACTIVE_STATUS,
+                            'status'            => $status,
                             'sku'               => $sku,
                         ];
                     }
